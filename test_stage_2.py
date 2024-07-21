@@ -40,7 +40,7 @@ def parse_args():
     parser.add_argument("--steps", type=int,   default=20, help="DDIM sampling steps")
     parser.add_argument("--fps",   type=int)
     
-    parser.add_argument("--skip",  type=int,   default=1, help="frame sample rate = (skip+1)") 
+    parser.add_argument("--skip",  type=int,   default=0, help="frame sample rate = (skip+1)")
     args = parser.parse_args()
 
     print('Width:', args.W)
@@ -211,7 +211,7 @@ def main():
         video = scale_video(video, original_width, original_height)     
         save_videos_grid(
             video,
-            f"{save_dir}/{ref_name}_{pose_name}_{args.cfg}_{args.steps}_{args.skip}_{m1}_{m2}.mp4",
+            f"{save_dir}/{ref_name}-{pose_name}-{args.cfg}-{args.steps}-{args.skip}-{m1}-{m2}.mp4",
             n_rows=3,
             fps=src_fps if args.fps is None else args.fps,
         )

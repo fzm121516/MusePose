@@ -48,20 +48,20 @@ def HWC3(x):
 def draw_pose(pose, H, W, draw_face):
     bodies = pose['bodies']
     faces = pose['faces']
-    hands = pose['hands']
+    # hands = pose['hands']
     candidate = bodies['candidate']
     subset = bodies['subset']
 
     # only the most significant person
     faces = pose['faces'][:1]
-    hands = pose['hands'][:2]
+    # hands = pose['hands'][:2]
     candidate = bodies['candidate'][:18]
     subset = bodies['subset'][:1]
 
     # draw
     canvas = np.zeros(shape=(H, W, 3), dtype=np.uint8)
     canvas = util.draw_bodypose(canvas, candidate, subset)
-    canvas = util.draw_handpose(canvas, hands)
+    # canvas = util.draw_handpose(canvas, hands)
     if draw_face == True:
         canvas = util.draw_facepose(canvas, faces)
 
