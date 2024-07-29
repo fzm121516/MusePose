@@ -27,23 +27,6 @@ video_list = sorted([*glob.glob(os.path.join(args.videos_dir, '**', '*.avi'), re
 num_video = len(video_list)
 print("Found ", num_video, " videos")
 
-
-# Function to run pose_align.py with specified arguments
-def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, gpu_id):
-    command = [
-        'python', 'mypose.py',
-        '--imgfn_refer', imgfn_refer,
-        '--vidfn', vidfn,
-        '--outfn_align_pose_video', outfn_align_pose_video,
-        '--gpu', str(gpu_id)
-    ]
-    result = subprocess.run(command, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"Error running pose_align.py: {result.stderr}")
-    else:
-        print(f"Successfully ran pose_align.py: {result.stdout}")
-
-
 # Dictionary to store the test cases for the YAML file
 test_cases = {}
 
@@ -90,21 +73,6 @@ for i in range(num_video):
     # Append video_name and .png to original_videos_dir
     imgfn_refer = os.path.join(original_videos_png_dir, video_name + '.png')
 
-    target_videos_dir = os.path.join(
-        args.target_videos_dir,
-        gait_view
-    )
-    # Find all .mp4 files in target_videos_dir
-    mp4_files = glob.glob(os.path.join(target_videos_dir, '**', '*.mp4'), recursive=True)
-    if not mp4_files:
-        print(f"No .mp4 files found in {target_videos_dir}")
-        continue
-    # Randomly select one .mp4 file
-    selected_mp4 = random.choice(mp4_files)
-    print(f"Selected .mp4 file: {selected_mp4}")
-    vidfn = os.path.join(target_videos_dir, selected_mp4)
-    # You can add further processing for the selected_mp4 file here
-
     result_dir = os.path.join(
         args.result_dir,
         os.path.relpath(video_path, args.videos_dir).rsplit(os.sep, 1)[0]
@@ -131,5 +99,3 @@ for i in range(num_video):
             yaml.dump({'test_cases': test_cases}, yaml_file, default_flow_style=False)
 
 print(f"YAML file created at {args.yaml_file}")
-
-
