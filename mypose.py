@@ -262,7 +262,14 @@ def run_align_video_with_filterPose_translate_smooth(args):
     H_out, W_out = size_calculate(H_in, W_in, args.detect_resolution)
     H_out, W_out = size_calculate(H_out, W_out, args.image_resolution)
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # 使用指定的GPU
+    if torch.cuda.is_available():
+        torch.cuda.set_device(args.gpu)
+        device = torch.device(f'cuda:{args.gpu}')
+    else:
+        device = torch.device('cpu')
+
     detector = DWposeDetector(
         det_config=args.yolox_config,
         det_ckpt=args.yolox_ckpt,
@@ -537,6 +544,7 @@ def main():
     parser.add_argument('--outfn_align_pose_video', type=str, default=None,
                         help='output path of the aligned video of the refer img')
     parser.add_argument('--outfn', type=str, default=None, help='Output path of the alignment visualization')
+    parser.add_argument('--gpu', type=int, default=0, help='GPU index to use')
     args = parser.parse_args()
 
     if not os.path.exists("./assets/poses/align"):
