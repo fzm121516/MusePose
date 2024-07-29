@@ -16,7 +16,7 @@ parser.add_argument('--result-dir', type=str, required=True)
 parser.add_argument('--yaml-file', type=str, default='./myconfig/test.yaml', help='Output YAML file path')
 parser.add_argument('--random-seed', type=int, default=42, help='Random seed for reproducibility')
 parser.add_argument('--gpu', type=int, default=2, help='GPU device id to use')
-parser.add_argument('--num-processes', type=int, default=16, help='Number of parallel processes to use')
+parser.add_argument('--num-processes', type=int, default=8, help='Number of parallel processes to use')
 args = parser.parse_args()
 
 # Set the random seed
