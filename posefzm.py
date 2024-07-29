@@ -5,7 +5,6 @@ import random  # For random selection
 import subprocess  # For running another Python script
 import yaml  # For creating the YAML file
 
-
 # --------------- Arguments ---------------
 parser = argparse.ArgumentParser(description='Test Images')
 parser.add_argument('--videos-dir', type=str, required=True)
@@ -25,11 +24,10 @@ video_list = sorted([*glob.glob(os.path.join(args.videos_dir, '**', '*.avi'), re
 num_video = len(video_list)
 print("Found ", num_video, " videos")
 
-
 # Function to run pose_align.py with specified arguments
 def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video):
     command = [
-        'python', 'pose_align.py',
+        'python', 'mypose.py',
         '--imgfn_refer', imgfn_refer,
         '--vidfn', vidfn,
         '--outfn_align_pose_video', outfn_align_pose_video
@@ -40,9 +38,11 @@ def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video):
     else:
         print(f"Successfully ran pose_align.py: {result.stdout}")
 
-
 # Dictionary to store the test cases for the YAML file
 test_cases = {}
+
+# Allowed gait types
+allowed_gait_types = ['nm-05', 'nm-06', 'bg-01', 'bg-02', 'cl-01', 'cl-02']
 
 # Process each video
 for i in range(num_video):
@@ -55,10 +55,15 @@ for i in range(num_video):
     parts = video_name.split('-')  # Split filename by '-'
     print(f"Filename parts: {parts}")  # Print the parts of the filename
     if len(parts) == 4:  # If the number of parts is 4, the filename format is correct
-        gait_type = os.path.join(f"{parts[1]}-{parts[2]}")
-        gait_view = os.path.join(parts[3])  # Combine the second and third parts
+        gait_type = f"{parts[1]}-{parts[2]}"
+        gait_view = parts[3]  # Combine the second and third parts
     else:  # If the filename format is not as expected, skip this file
         print(f"Unexpected filename format: {video_name}")
+        continue
+
+    # Check if gait_type is in allowed_gait_types
+    if gait_type not in allowed_gait_types:
+        print(f"Gait type {gait_type} not in allowed list, skipping.")
         continue
 
     original_videos_png_dir = os.path.join(
