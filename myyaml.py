@@ -113,21 +113,23 @@ for i in range(num_video):
         os.makedirs(result_dir)
     outfn_align_pose_video = os.path.join(result_dir, video_name + '.mp4')
 
-    # Run the pose_align.py script with the specified arguments
-    run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, args.gpu)
+    # Check if outfn_align_pose_video already exists
+    if os.path.exists(outfn_align_pose_video):
+        print(f"{outfn_align_pose_video} exists")
+        # Add to test cases dictionary
+        if imgfn_refer not in test_cases:
+            test_cases[imgfn_refer] = []
+        test_cases[imgfn_refer].append(outfn_align_pose_video)
 
-    # Add to test cases dictionary
-    if imgfn_refer not in test_cases:
-        test_cases[imgfn_refer] = []
-    test_cases[imgfn_refer].append(outfn_align_pose_video)
+        # Ensure the directory for the YAML file exists
+        yaml_dir = os.path.dirname(args.yaml_file)
+        if not os.path.exists(yaml_dir):
+            os.makedirs(yaml_dir)
 
-    # Ensure the directory for the YAML file exists
-    yaml_dir = os.path.dirname(args.yaml_file)
-    if not os.path.exists(yaml_dir):
-        os.makedirs(yaml_dir)
-
-    # Write current test case to YAML file
-    with open(args.yaml_file, 'w') as yaml_file:
-        yaml.dump({'test_cases': test_cases}, yaml_file, default_flow_style=False)
+        # Write current test case to YAML file
+        with open(args.yaml_file, 'w') as yaml_file:
+            yaml.dump({'test_cases': test_cases}, yaml_file, default_flow_style=False)
 
 print(f"YAML file created at {args.yaml_file}")
+
+
