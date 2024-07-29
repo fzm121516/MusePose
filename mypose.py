@@ -515,10 +515,10 @@ def run_align_video_with_filterPose_translate_smooth(args):
             os.makedirs(directory)
 
     # # Create and save the first video
-    # clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_demo, fps=fps)
-    # ensure_dir(outfn)
-    # clip.write_videofile(outfn, fps=fps)
-    # print('pose demo done')
+    clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_demo, fps=fps)
+    ensure_dir(outfn)
+    clip.write_videofile(outfn, fps=fps)
+    print('pose demo done')
     # Create and save the second video
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_pose_only, fps=fps)
     ensure_dir(args.outfn_align_pose_video)
