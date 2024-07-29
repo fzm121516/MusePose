@@ -27,6 +27,7 @@ video_list = sorted([*glob.glob(os.path.join(args.videos_dir, '**', '*.avi'), re
 num_video = len(video_list)
 print("Found ", num_video, " videos")
 
+
 # Function to run pose_align.py with specified arguments
 def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, gpu_id):
     command = [
@@ -41,6 +42,7 @@ def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, gpu_id):
         print(f"Error running pose_align.py: {result.stderr}")
     else:
         print(f"Successfully ran pose_align.py: {result.stdout}")
+
 
 # Dictionary to store the test cases for the YAML file
 test_cases = {}
