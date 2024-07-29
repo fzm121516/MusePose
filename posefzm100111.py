@@ -121,6 +121,14 @@ def process_video(video_path, test_cases, args):
         test_cases[imgfn_refer] = []
     test_cases[imgfn_refer].append(outfn_align_pose_video)
 
+    # Ensure the directory for the YAML file exists
+    yaml_dir = os.path.dirname(args.yaml_file)
+    if not os.path.exists(yaml_dir):
+        os.makedirs(yaml_dir)
+
+    # Write current test case to YAML file
+    with open(args.yaml_file, 'w') as yaml_file:
+        yaml.dump({'test_cases': test_cases}, yaml_file, default_flow_style=False)
 
 # Ensure the directory for the YAML file exists
 yaml_dir = os.path.dirname(args.yaml_file)
@@ -132,8 +140,5 @@ pool = multiprocessing.Pool(processes=args.num_processes)
 partial_process_video = partial(process_video, test_cases=test_cases, args=args)
 pool.map(partial_process_video, video_list)
 
-# Write test cases to YAML file
-with open(args.yaml_file, 'w') as yaml_file:
-    yaml.dump({'test_cases': dict(test_cases)}, yaml_file, default_flow_style=False)
 
 print(f"YAML file created at {args.yaml_file}")
