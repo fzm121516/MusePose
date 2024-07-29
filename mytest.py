@@ -202,25 +202,25 @@ def main():
         m2 = config.motion_module_path.split('.')[0].split('/')[-1]
 
         save_dir_name = f"{time_str}-{args.cfg}-{m1}-{m2}"
-        save_dir = Path(f"{args.save_dir}/video-{date_str}/{save_dir_name}")
+        save_dir = Path(f"{args.save_dir}")
         save_dir.mkdir(exist_ok=True, parents=True)
 
         result = scale_video(video[:,:,:L], original_width, original_height)
         save_videos_grid(
             result,
-            f"{save_dir}/{ref_name}_{pose_name}_{args.cfg}_{args.steps}_{args.skip}.mp4",
+            f"{save_dir}/{ref_name}.mp4",
             n_rows=1,
             fps=src_fps if args.fps is None else args.fps,
         )
 
-        video = torch.cat([ref_image_tensor, pose_tensor[:,:,:L], video[:,:,:L]], dim=0)
-        video = scale_video(video, original_width, original_height)
-        save_videos_grid(
-            video,
-            f"{save_dir}/{ref_name}-{pose_name}-{args.cfg}-{args.steps}-{args.skip}-{m1}-{m2}.mp4",
-            n_rows=3,
-            fps=src_fps if args.fps is None else args.fps,
-        )
+        # video = torch.cat([ref_image_tensor, pose_tensor[:,:,:L], video[:,:,:L]], dim=0)
+        # video = scale_video(video, original_width, original_height)
+        # save_videos_grid(
+        #     video,
+        #     f"{save_dir}/{ref_name}-{pose_name}-{args.cfg}-{args.steps}-{args.skip}-{m1}-{m2}.mp4",
+        #     n_rows=3,
+        #     fps=src_fps if args.fps is None else args.fps,
+        # )
 
     for ref_image_path_dir in config["test_cases"].keys():
         if os.path.isdir(ref_image_path_dir):
