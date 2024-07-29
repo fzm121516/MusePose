@@ -74,8 +74,8 @@ for i in range(num_video):
     # Check if gait_id is within the range 075 to 124
     try:
         gait_id_num = int(gait_id)
-        if gait_id_num < 75 or gait_id_num > 124:
-            print(f"Gait ID {gait_id} not in the allowed range (075-124), skipping.")
+        if gait_id_num < 75 or gait_id_num > 86:
+            print(f"Gait ID {gait_id} not in the allowed range (075-086), skipping.")
             continue
     except ValueError:
         print(f"Invalid Gait ID {gait_id}, skipping.")
