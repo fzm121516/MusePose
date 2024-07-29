@@ -55,6 +55,7 @@ for i in range(num_video):
     parts = video_name.split('-')  # Split filename by '-'
     print(f"Filename parts: {parts}")  # Print the parts of the filename
     if len(parts) == 4:  # If the number of parts is 4, the filename format is correct
+        gait_id = parts[0]
         gait_type = f"{parts[1]}-{parts[2]}"
         gait_view = parts[3]  # Combine the second and third parts
     else:  # If the filename format is not as expected, skip this file
@@ -64,6 +65,16 @@ for i in range(num_video):
     # Check if gait_type is in allowed_gait_types
     if gait_type not in allowed_gait_types:
         print(f"Gait type {gait_type} not in allowed list, skipping.")
+        continue
+
+    # Check if gait_id is within the range 075 to 124
+    try:
+        gait_id_num = int(gait_id)
+        if gait_id_num < 75 or gait_id_num > 124:
+            print(f"Gait ID {gait_id} not in the allowed range (075-124), skipping.")
+            continue
+    except ValueError:
+        print(f"Invalid Gait ID {gait_id}, skipping.")
         continue
 
     original_videos_png_dir = os.path.join(
