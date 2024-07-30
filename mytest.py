@@ -201,8 +201,14 @@ def main():
         m1 = config.pose_guider_path.split('.')[0].split('/')[-1]
         m2 = config.motion_module_path.split('.')[0].split('/')[-1]
 
-        save_dir_name = f"{time_str}-{args.cfg}-{m1}-{m2}"
-        save_dir = Path(f"{args.save_dir}")
+        # 解析文件名以创建目录结构
+        parts = ref_name.split('-')  # 按照 '-' 分割文件名
+        print(f"Filename parts: {parts}")  # 打印文件名的各部分
+        subdir = os.path.join(parts[0], f"{parts[1]}-{parts[2]}", parts[3])  # 合并第二部分和第三部分
+
+        # save_dir_name = f"{time_str}-{args.cfg}-{m1}-{m2}"
+
+        save_dir = Path(args.save_dir) / subdir
         save_dir.mkdir(exist_ok=True, parents=True)
 
         result = scale_video(video[:,:,:L], original_width, original_height)
@@ -212,6 +218,7 @@ def main():
             n_rows=1,
             fps=src_fps if args.fps is None else args.fps,
         )
+
 
         # video = torch.cat([ref_image_tensor, pose_tensor[:,:,:L], video[:,:,:L]], dim=0)
         # video = scale_video(video, original_width, original_height)
