@@ -348,15 +348,15 @@ def run_align_video_with_filterPose_translate_smooth(args):
 
             dist_1st_img = np.linalg.norm(body_1st_img[0] - body_1st_img[1])  # 0.078
             dist_ref_img = np.linalg.norm(body_ref_img[0] - body_ref_img[1])  # 0.106
-            align_args["scale_neck"] = dist_ref_img / dist_1st_img  # align / pose = ref / 1st
+            align_args["scale_neck"] = 1  # align / pose = ref / 1st
 
             dist_1st_img = np.linalg.norm(body_1st_img[16] - body_1st_img[17])
             dist_ref_img = np.linalg.norm(body_ref_img[16] - body_ref_img[17])
-            align_args["scale_face"] = dist_ref_img / dist_1st_img
+            align_args["scale_face"] = 1
 
             dist_1st_img = np.linalg.norm(body_1st_img[2] - body_1st_img[5])  # 0.112
             dist_ref_img = np.linalg.norm(body_ref_img[2] - body_ref_img[5])  # 0.174
-            align_args["scale_shoulder"] = dist_ref_img / dist_1st_img
+            align_args["scale_shoulder"] = 1
 
             dist_1st_img = np.linalg.norm(body_1st_img[2] - body_1st_img[3])  # 0.895
             dist_ref_img = np.linalg.norm(body_ref_img[2] - body_ref_img[3])  # 0.134
@@ -364,7 +364,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
             dist_1st_img = np.linalg.norm(body_1st_img[5] - body_1st_img[6])
             dist_ref_img = np.linalg.norm(body_ref_img[5] - body_ref_img[6])
             s2 = dist_ref_img / dist_1st_img
-            align_args["scale_arm_upper"] = (s1 + s2) / 2  # 1.548
+            align_args["scale_arm_upper"] = 1
 
             dist_1st_img = np.linalg.norm(body_1st_img[3] - body_1st_img[4])
             dist_ref_img = np.linalg.norm(body_ref_img[3] - body_ref_img[4])
@@ -372,7 +372,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
             dist_1st_img = np.linalg.norm(body_1st_img[6] - body_1st_img[7])
             dist_ref_img = np.linalg.norm(body_ref_img[6] - body_ref_img[7])
             s2 = dist_ref_img / dist_1st_img
-            align_args["scale_arm_lower"] = (s1 + s2) / 2
+            align_args["scale_arm_lower"] = 1
 
             # hand
             dist_1st_img = np.zeros(10)
@@ -411,11 +411,11 @@ def run_align_video_with_filterPose_translate_smooth(args):
             #         "scale_arm_lower"]) / 3
             # else:
             #     align_args["scale_hand"] = (align_args["scale_arm_upper"] + align_args["scale_arm_lower"]) / 2
-            align_args["scale_hand"] = (align_args["scale_arm_upper"] + align_args["scale_arm_lower"]) / 2
+            align_args["scale_hand"] = 1
             # body
             dist_1st_img = np.linalg.norm(body_1st_img[1] - (body_1st_img[8] + body_1st_img[11]) / 2)
             dist_ref_img = np.linalg.norm(body_ref_img[1] - (body_ref_img[8] + body_ref_img[11]) / 2)
-            align_args["scale_body_len"] = dist_ref_img / dist_1st_img
+            align_args["scale_body_len"] = 1
 
             dist_1st_img = np.linalg.norm(body_1st_img[8] - body_1st_img[9])
             dist_ref_img = np.linalg.norm(body_ref_img[8] - body_ref_img[9])
@@ -423,7 +423,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
             dist_1st_img = np.linalg.norm(body_1st_img[11] - body_1st_img[12])
             dist_ref_img = np.linalg.norm(body_ref_img[11] - body_ref_img[12])
             s2 = dist_ref_img / dist_1st_img
-            align_args["scale_leg_upper"] = (s1 + s2) / 2
+            align_args["scale_leg_upper"] = 1
 
             dist_1st_img = np.linalg.norm(body_1st_img[9] - body_1st_img[10])
             dist_ref_img = np.linalg.norm(body_ref_img[9] - body_ref_img[10])
@@ -431,7 +431,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
             dist_1st_img = np.linalg.norm(body_1st_img[12] - body_1st_img[13])
             dist_ref_img = np.linalg.norm(body_ref_img[12] - body_ref_img[13])
             s2 = dist_ref_img / dist_1st_img
-            align_args["scale_leg_lower"] = (s1 + s2) / 2
+            align_args["scale_leg_lower"] = 1
 
             ####################
             ####################
@@ -441,7 +441,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
                     align_args[k] = 1
 
             # centre offset (the offset of key point 1)
-            offset = body_ref_img[1] - body_1st_img[1]
+            offset = 0
 
         # pose align
         pose_img, pose_ori = detector(img, args.detect_resolution, args.image_resolution, output_type='cv2',

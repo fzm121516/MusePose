@@ -504,7 +504,7 @@ def run_align_video_with_filterPose_translate_smooth(args):
 
         res = np.concatenate([ref_img, ref_pose, output_transformed, video_frame, video_pose], axis=1)
         result_demo.append(res)
-        result_pose_only.append(video_pose)
+        result_pose_only.append(output_transformed)
 
     print(f"pose_list len: {len(pose_list)}")
 
@@ -515,10 +515,10 @@ def run_align_video_with_filterPose_translate_smooth(args):
             os.makedirs(directory)
 
     # # Create and save the first video
-    # clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_demo, fps=fps)
-    # ensure_dir(outfn)
-    # clip.write_videofile(outfn, fps=fps)
-    # print('pose demo done')
+    clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_demo, fps=fps)
+    ensure_dir(outfn)
+    clip.write_videofile(outfn, fps=fps)
+    print('pose demo done')
     # Create and save the second video
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(result_pose_only, fps=fps)
     ensure_dir(args.outfn_align_pose_video)
