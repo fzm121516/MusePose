@@ -18,7 +18,8 @@ parser.add_argument('--random-seed', type=int, default=42, help='Random seed for
 parser.add_argument('--gpu', type=int, default=0, help='GPU device id to use')
 parser.add_argument('--num-processes', type=int, default=16, help='Number of parallel processes to use')
 parser.add_argument('--video-map-file', type=str, required=True, help='JSON file mapping video names to mp4 files')
-parser.add_argument('--gait-id-range', type=int, nargs=2, default=[75, 86], help='Range of gait IDs to include (inclusive)')
+parser.add_argument('--gait-id-range', type=int, nargs=2, default=[75, 86],
+                    help='Range of gait IDs to include (inclusive)')
 args = parser.parse_args()
 
 # Set the random seed
@@ -33,6 +34,7 @@ print("Found ", num_video, " videos")
 # Load video map from JSON file
 with open(args.video_map_file, 'r') as f:
     video_map = json.load(f)
+
 
 # Function to run pose_align.py with specified arguments
 def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, gpu_id):
@@ -49,12 +51,14 @@ def run_pose_align(imgfn_refer, vidfn, outfn_align_pose_video, gpu_id):
     else:
         print(f"Successfully ran pose_align.py: {result.stdout}")
 
+
 # Dictionary to store the test cases for the YAML file
 manager = multiprocessing.Manager()
 test_cases = manager.dict()
 
 # Allowed gait types
 allowed_gait_types = ['nm-05', 'nm-06', 'bg-01', 'bg-02', 'cl-01', 'cl-02']
+
 
 # Process each video
 def process_video(video_path, test_cases, args):
@@ -81,7 +85,8 @@ def process_video(video_path, test_cases, args):
     try:
         gait_id_num = int(gait_id)
         if gait_id_num < args.gait_id_range[0] or gait_id_num > args.gait_id_range[1]:
-            print(f"Gait ID {gait_id} not in the allowed range ({args.gait_id_range[0]}-{args.gait_id_range[1]}), skipping.")
+            print(
+                f"Gait ID {gait_id} not in the allowed range ({args.gait_id_range[0]}-{args.gait_id_range[1]}), skipping.")
             return
     except ValueError:
         print(f"Invalid Gait ID {gait_id}, skipping.")
@@ -121,6 +126,7 @@ def process_video(video_path, test_cases, args):
     test_cases[imgfn_refer].append(outfn_align_pose_video)
 
     print(f"Added {outfn_align_pose_video} to test_cases[{imgfn_refer}]")
+
 
 # Create a pool of workers and process videos in parallel
 pool = multiprocessing.Pool(processes=args.num_processes)
